@@ -1,0 +1,156 @@
+﻿@model TicketViewModel.TicketInfoViewModel.TicketInfoViewModel
+@{
+    Layout = null;
+}
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">اطلاعات پرواز</div>
+                <div class="panel-body">
+                    <div class="col-lg-12">
+                        <table class="table" style="text-align: center;
+background: #e8e8e8;
+border: 2px dashed #808080;
+border-radius: 5px;">
+                            <tr>
+                                <td>
+                                    <img src="~/Content/Image/@Model.Corporates.CorporateImage" width="35%" />
+                                </td>
+                                <td>
+                                    نام شرکت: @Model.Corporates.CorporateName
+                                </td>
+                                <td>
+                                    شماره پرواز: @Model.Flights.Flight_Number
+                                </td>
+                                <td>
+                                    کلاس: @Model.Flights.Flight_Class <br /> نوع پرواز: @Model.Flights.Ticket_Type
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>مبدأ: @Model.Flights.Start_Location <br /> مقصد: @Model.Flights.End_Location </td>
+                                <td>
+                                    تاریخ حرکت: @Model.Flights.Start_Date   <br />   ساعت حرکت: @Model.Flights.Start_Houre
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">اطلاعات کاربر ثبت کننده</div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>نام و نام خانوادگی</td>
+                                <td>ایمیل</td>
+                                <td>کلمه کاربری</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.User.FullName</td>
+                                <td>@Model.User.Email</td>
+                                <td>@Model.User.UserName</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">اطلاعات مسافران</div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr style="background:#eaeaea">
+                            <th>
+                                ردیف
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers[0].PassengerName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers[0].NationalCode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers[0].Gender)
+                            </th>
+
+                        </tr>
+                        @{ int i = 1; string genderTitle = "";}
+                        @foreach (var item in Model.Passengers)
+                        {
+                            if (item.Gender == 1)
+                            {
+                                genderTitle = "مرد";
+                            }
+                            else
+                            {
+                                genderTitle = "زن";
+                            }
+                            <tr>
+                                <td>
+                                    @(i++)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PassengerName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NationalCode)
+                                </td>
+                                <td>
+                                    @genderTitle
+                                </td>
+
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">اطلاعات خرید و سفارش</div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>تاریخ سفارش</td>
+                                <td>مبلغ کل پرداخت</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Utility.UtilityFunc.UtilityFunc.ConvertDateTimeToShamsi(Model.Orders.Order_Date)
+                                </td>
+                                <td>@Model.Orders.AllPrice</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

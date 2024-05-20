@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TicketDataLayer.Model.Passenger>
+<div class="alert-success">
+    <p style="padding: 2%;">
+        اطلاعات مسافران پرواز
+    </p>
+</div>
+<table class="table">
+    <tr style="background:#eaeaea">
+        <th>
+            ردیف
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PassengerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NationalCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+
+    </tr>
+    @{ int i = 1; string genderTitle = "";}
+    @foreach (var item in Model)
+    {
+        if (item.Gender == 1)
+        {
+            genderTitle = "مرد";
+        }
+        else
+        {
+            genderTitle = "زن";
+        }
+        <tr>
+            <td>
+                @(i++)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PassengerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NationalCode)
+            </td>
+            <td>
+                @genderTitle
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+@Html.ActionLink("تایید اطلاعات - صفحه پرداخت", "Payment", "Default", new { flightId = Model.FirstOrDefault().FlightId, countPassenger = Model.Count() }, new { @class = "btn btn-info", @style = "float:left;" })

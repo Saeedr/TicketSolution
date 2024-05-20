@@ -1,0 +1,198 @@
+﻿@model TicketViewModel.SearchTicketViewModel.SearchTicketViewModel
+
+@{
+    /**/
+
+    ViewBag.Title = "AddTicket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div id="clock" style="transform: scale(0.5);
+position: absolute;
+top: 4%;
+left: -12%;">
+
+    </div>
+</div>
+
+<h2>مشخصات پرواز انتخابی</h2>
+
+<div class="container">
+    <div class="row">
+
+        @{decimal fullPrice = Model.Flights.Price * Model.CountPassenger; }
+        <div class="col-lg-12">
+            <table class="table" style="text-align: center;
+background: #e8e8e8;
+border: 2px dashed #808080;
+border-radius: 5px;">
+                <tr>
+                    <td>
+                        <img src="~/Content/Image/@Model.Corporates.CorporateImage" width="35%" />
+                    </td>
+                    <td>
+                        نام شرکت: @Model.Corporates.CorporateName
+                    </td>
+                    <td>
+                        شماره پرواز: @Model.Flights.Flight_Number
+                    </td>
+                    <td>
+                        کلاس: @Model.Flights.Flight_Class <br /> نوع پرواز: @Model.Flights.Ticket_Type
+                    </td>
+                    <td>
+                        ظرفیت پرواز: @Model.Flights.Capacity
+                    </td>
+                </tr>
+                <tr>
+                    <td>مبدأ: @Model.Flights.Start_Location <br /> مقصد: @Model.Flights.End_Location </td>
+                    <td>
+                        تاریخ حرکت: @Model.Flights.Start_Date   <br />   ساعت حرکت: @Model.Flights.Start_Houre
+                    </td>
+                    <td>
+                        هزینه پرواز: @Model.Flights.Price.ToString("#,0") تومان  <br />  تعداد مسافر: @Model.CountPassenger
+                    </td>
+                    <td>
+                        هزینه کل: @fullPrice.ToString("#,0") تومان
+                    </td>
+                    <td></td>
+                </tr>
+
+
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container" id="insertPassengerDiv">
+    @Html.Action("PassengerInfo")
+</div>
+
+
+<div class="container" id="showPassengerInfo">
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/FlipClock/flipclock.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        $(function () {
+            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?countPassenger=@Request.Params["countPassenger"]' + '&reLoad=true';
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            countDown();
+        });
+        function UpdatePassengerCount() {
+            var data = {
+                "id": '@Url.RequestContext.RouteData.Values["id"]',
+                "passengerCount":'@Request.Params["countPassenger"]'
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ReturnPassengerCount","Default")',
+                contentType: "application/json; charset=utf8",
+                dataType: "json",
+                data: JSON.stringify(data),
+                success: function (res) {
+                    if (res) {
+                        window.location.href = '@Url.Action("Index","Default")';
+                    }
+                },
+                error: function (jqXHR, status, error) {
+                    alert(status + "    " + error)
+                }
+
+            });
+        }
+        function countDown() {
+            var clock = $("#clock").FlipClock({
+                clockFace: 'MinuteCounter',
+                autoStart: false,
+                countdown: true,
+                callbacks: {
+                    stop: function () {
+                        UpdatePassengerCount();
+                    }
+                }
+            });
+            var t = 30 * 60
+            clock.setTime(t);
+            if (t <= 0) {
+                clock.stop();
+            } else {
+                clock.start();
+            }
+        }
+
+
+
+
+        function setCookie(c_name, value, exdays) {
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate() + exdays);
+            var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+            document.cookie = c_name + "=" + c_value;
+        }
+
+        function getCookie(c_name) {
+            var i, x, y, ARRcookies = document.cookie.split(";");
+            for (i = 0; i < ARRcookies.length; i++) {
+                x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+                y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+                x = x.replace(/^\s+|\s+$/g, "");
+                if (x == c_name) {
+                    return unescape(y);
+                }
+            }
+        }
+
+        function DeleteCookie(name) {
+            document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+        }
+
+
+        @*// run in load event
+        $(window).load(function () {
+            //if IsRefresh cookie exists
+            var IsRefresh = getCookie("IsRefresh");
+            if (IsRefresh != null && IsRefresh != "") {
+                //cookie exists then you refreshed this page(F5, reload button or right click and reload)
+                //SOME CODE
+                window.location.href = '@Url.Action("Index","Default")';
+                UpdatePassengerCount();
+                DeleteCookie("IsRefresh");
+            }
+            else {
+                //cookie doesnt exists then you landed on this page
+                //SOME CODE
+                setCookie("IsRefresh", "true", 1);
+            }
+        })*@
+
+
+        OnSuccess = "onSuccess",
+            OnFailure = "onFailure",
+            LoadingElementId = "loadingDiv",
+            OnBegin = "onBegine"
+
+        function onSuccess(result) {
+            $("#insertPassengerDiv").remove();
+            $("#showPassengerInfo").load("/Default/GetPassengerInfo");
+
+        }
+
+        function onFailure() {
+            alert("با خطا مواجه شده اید");
+        }
+
+        function onBegine() {
+            $("#btnSavePassenger").hide();
+        }
+
+    </script>
+}

@@ -1,0 +1,30 @@
+﻿
+@using (Html.BeginForm("assigneRole", "Admin", FormMethod.Post))
+{
+
+    <div class="form-group">
+        <label>نام نقش</label>
+        <div class="col-lg-6">
+            @Html.DropDownList("Role", ViewBag.Role as IEnumerable<SelectListItem>, "....", new { @class="form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>نام کاربر</label>
+        <div class="col-lg-6">
+            @Html.DropDownList("User", ViewBag.User as IEnumerable<SelectListItem>, "....", new { @class = "form-control" })
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <div class="col-lg-6">
+            <input type="submit" class="form-control btn btn-info" name="btnSaveUser" value="تخصیص نقش" />
+        </div>
+    </div>
+
+
+
+}
+

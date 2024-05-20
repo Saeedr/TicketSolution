@@ -1,0 +1,106 @@
+﻿@model IEnumerable<TicketDataLayer.Model.Flight>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Corporate.CorporateName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Flight_Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CargoWeight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Flight_Class)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Start_Houre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Start_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ticket_Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Start_Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.End_Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Capacity)
+        </th>
+        <th>عملیات</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Corporate.CorporateName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Flight_Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CargoWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Flight_Class)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start_Houre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ticket_Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start_Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.End_Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit","Flights",new { id=item.FlightId})" class="btn btn-default"><i class="glyphicon glyphicon-edit"></i> &nbsp; Edit</a>
+                <a href="@Url.Action("Delete","Flights",new { id=item.FlightId})" class="btn btn-default"><i class="glyphicon glyphicon-edit"></i> &nbsp; Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@section myScript{
+    <script>
+        $(function () {
+            var message = '@TempData["SuccessEdit"]';
+            if (message != '') {
+                alertify.alert(message);
+            }
+        });
+    </script>
+}

@@ -1,0 +1,212 @@
+﻿@model TicketViewModel.TicketInfoViewModel.TicketInfoViewModel
+@{
+    ViewBag.Title = "Verify";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>اطلاعات خرید</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col col-lg-12">
+            @{
+                if (ViewBag.IsSuccess == true)
+                {
+                    <div class="alert alert-success">
+                        <h2>عمل پرداخت با موفقیت انجام شد</h2><br />
+                        <h3>شماره تراکنش خرید: @ViewBag.RefId</h3>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <h2>عمل پرداخت با شکست انجام شد</h2>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">اطلاعات پرواز</div>
+                <div class="panel-body">
+                    <div class="col-lg-12">
+                        <table class="table" style="text-align: center;
+background: #e8e8e8;
+border: 2px dashed #808080;
+border-radius: 5px;">
+                            <tr>
+                                <td>
+                                    <img src="~/Content/Image/@Model.Corporates.CorporateImage" width="35%" />
+                                </td>
+                                <td>
+                                    نام شرکت: @Model.Corporates.CorporateName
+                                </td>
+                                <td>
+                                    شماره پرواز: @Model.Flights.Flight_Number
+                                </td>
+                                <td>
+                                    کلاس: @Model.Flights.Flight_Class <br /> نوع پرواز: @Model.Flights.Ticket_Type
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>مبدأ: @Model.Flights.Start_Location <br /> مقصد: @Model.Flights.End_Location </td>
+                                <td>
+                                    تاریخ حرکت: @Model.Flights.Start_Date   <br />   ساعت حرکت: @Model.Flights.Start_Houre
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">اطلاعات کاربر ثبت کننده</div>
+                <div class="panel-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>نام و نام خانوادگی</td>
+                                <td>ایمیل</td>
+                                <td>کلمه کاربری</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.User.FullName</td>
+                                <td>@Model.User.Email</td>
+                                <td>@Model.User.UserName</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">اطلاعات مسافران</div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr style="background:#eaeaea">
+                            <th>
+                                ردیف
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers[0].PassengerName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers[0].NationalCode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Passengers[0].Gender)
+                            </th>
+
+                        </tr>
+                        @{ int i = 1; string genderTitle = "";}
+                        @foreach (var item in Model.Passengers)
+                        {
+                            if (item.Gender == 1)
+                            {
+                                genderTitle = "مرد";
+                            }
+                            else
+                            {
+                                genderTitle = "زن";
+                            }
+                            <tr>
+                                <td>
+                                    @(i++)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PassengerName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NationalCode)
+                                </td>
+                                <td>
+                                    @genderTitle
+                                </td>
+
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel-default">
+                <div class="panel-heading">اطلاعات خرید و سفارش</div>
+                <div class="panel-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>تاریخ سفارش</td>
+                                <td>مبلغ کل پرداخت</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Utility.UtilityFunc.UtilityFunc.ConvertDateTimeToShamsi(Model.Orders.Order_Date)
+                                </td>
+                                <td>@Model.Orders.AllPrice</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-lg-12">
+        @Html.ActionLink("چاپ بلیط", "ReportInfo", "Default", new { orderId = Model.Orders.OrderId, count = Model.Orders.Passenger_Count, token = Model.Passengers[0].token }, new { @class = "btn btn-info" })
+    </div>
+</div>
+
+
+
+
+
+
+
+@section scripts{
+    <script>
+        $(function () {
+            if (window.history && window.history.pushState) {
+                $(window).on('popstate', function () {
+                    var hashLocation = location.hash;
+                    var hashSplit = hashLocation.split("#!/");
+                    var hashName = hashSplit[1];
+                    if (hashName !== '') {
+                        var hash = window.location.hash;
+                        if (hash === '') {
+                            alert('Back button was pressed.');
+                            window.location.href = '/Default/ErrorPage';
+                            return false;
+                        }
+                    }
+                });
+
+                window.history.pushState('forward', null, './#forward');
+            }
+        });
+    </script>
+}

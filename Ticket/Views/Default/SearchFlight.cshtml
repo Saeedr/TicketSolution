@@ -1,0 +1,109 @@
+﻿@model IEnumerable<TicketViewModel.SearchTicketViewModel.SearchTicketViewModel>
+
+@{
+    /**/
+
+    ViewBag.Title = "SearchFlight";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>لیست پروازها</h2>
+
+@if (Model.Count() <= 0)
+{
+    <div class="alert alert-danger">
+        <p>
+            پروازی یافت نشد!
+        </p>
+    </div>
+    @Html.ActionLink("صفحه نخست", "Index", null, new { @class = "btn btn-info" });
+}
+else
+{
+    <input type="hidden" value="@Model.FirstOrDefault().Flights.Start_Location" id="firstLocation" />
+    <input type="hidden" value="@Model.FirstOrDefault().Flights.End_Location" id="secondLocation" />
+    <input type="hidden" value="@Model.FirstOrDefault().Flights.Start_Date" id="moveDat" />
+    <input type="hidden" value="@Model.FirstOrDefault().CountPassenger" id="count" />
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    جستجو <i class="glyphicon glyphicon-search" style="cursor:pointer; float:left" data-toggle="collapse" data-target="#bodySearch"></i>
+                </div>
+                <div class="panel-body collapse" id="bodySearch">
+                    @Html.Action("FilterFlight", "Default")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            decimal fullPrice = item.Flights.Price * item.CountPassenger;
+            <div class="col-lg-12">
+                <table class="table" style="text-align: center;
+background: #e8e8e8;
+border: 2px dashed #808080;
+border-radius: 5px;">
+                    <tr>
+                        <td>
+                            <img src="~/Content/Image/@item.Corporates.CorporateImage" width="35%" />
+                        </td>
+                        <td>
+                            نام شرکت: @item.Corporates.CorporateName
+                        </td>
+                        <td>
+                            شماره پرواز: @item.Flights.Flight_Number
+                        </td>
+                        <td>
+                            کلاس: @item.Flights.Flight_Class <br /> نوع پرواز: @item.Flights.Ticket_Type
+                        </td>
+                        <td>
+                            ظرفیت پرواز: @item.Flights.Capacity
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>مبدأ: @item.Flights.Start_Location <br /> مقصد: @item.Flights.End_Location </td>
+                        <td>
+                            تاریخ حرکت: @item.Flights.Start_Date   <br />   ساعت حرکت: @item.Flights.Start_Houre
+                        </td>
+                        <td>
+                            هزینه پرواز: @item.Flights.Price.ToString("#,0") تومان  <br />  تعداد مسافر: @item.CountPassenger
+                        </td>
+                        <td>
+                            هزینه کل: @fullPrice.ToString("#,0") تومان
+                        </td>
+                        <td>
+                            @Html.ActionLink("ثبت پرواز", "AddTicket", new { id = item.Flights.FlightId, countPassenger = item.CountPassenger }, new { @class = "btn btn-info form-control" })
+                            <br /><br />
+                            <input type="button" class="btn btn-warning form-control" value="انصراف" />
+                        </td>
+                    </tr>
+
+
+
+                </table>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section myScript{
+    <script>
+        $(function () {
+            $("#First_Location").val($("#firstLocation").val());
+            $("#Second_Location").val($("#secondLocation").val());
+            $("#MoveDate").val($("#moveDat").val());
+            $("#PassengerCount").val($("#count").val());
+        });
+    </script>
+}

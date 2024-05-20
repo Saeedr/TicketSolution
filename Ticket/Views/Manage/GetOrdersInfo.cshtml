@@ -1,0 +1,67 @@
+﻿@model IEnumerable<TicketViewModel.OrderInfoViewModel.OrderInfoViewModel>
+
+@{
+    ViewBag.Title = "GetOrdersInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>لیست سفارشات</h2>
+
+
+<table class="table">
+    <tr>
+        <th>شماره پرواز</th>
+        <th>مبدا</th>
+        <th>مقصد</th>
+        <th>شماره سفارش</th>
+        <th>تاریخ سفارش</th>
+        <th>تعداد</th>
+        <th>کل مبلغ</th>
+        <th>پرینت</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Flights.Flight_Number</td>
+            <td>@item.Flights.Start_Location</td>
+            <td>@item.Flights.End_Location</td>
+            <td>@item.Orders.OrderId</td>
+            <td>@item.Orders.Order_Date</td>
+            <td>@item.Orders.Passenger_Count</td>
+            <td>@item.Orders.AllPrice</td>
+            <td>
+                @Html.ActionLink(" پرینت ", "ReportInfo", "Default", new { orderId = item.Orders.OrderId, count = item.Orders.Passenger_Count, token = item.Passengers[0].token }, new { @class = " btn btn-info" })
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<div class="row text-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="@((ViewBag.PageNumber==1)?"#":"/Manage/GetOrdersInfo?page="+(ViewBag.PageNumber-1))" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+
+            @for (int i = 1; i <= ViewBag.PageCount; i++)
+            {
+                <li class="@((ViewBag.PageNumber==i)?"active":"")"><a class="page-link" href="/Manage/GetOrdersInfo?page=@i">@i</a></li>
+
+            }
+
+
+            <li class="page-item">
+                <a class="page-link" href="@((ViewBag.PageNumber==ViewBag.PageCount)?"#":"/Manage/GetOrdersInfo?page="+(ViewBag.PageNumber+1))" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

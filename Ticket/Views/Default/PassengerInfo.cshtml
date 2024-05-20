@@ -1,0 +1,82 @@
+﻿@model List<TicketDataLayer.Model.Passenger>
+@if (Request.Params["reLoad"] == null || Convert.ToBoolean(Request.Params["reLoad"]) == false)
+{
+    //using (Html.BeginForm("InsertPassenger", "Default", new { countPassenger = Model.Count() }, FormMethod.Post))
+    using (Ajax.BeginForm("InsertPassenger", "Default", new AjaxOptions
+    {
+        OnSuccess = "onSuccess",
+        OnFailure = "onFailure",
+        LoadingElementId = "loadingDiv",
+        OnBegin="onBegine"
+    }))
+    {
+        for (int i = 0; i < Model.Count(); i++)
+        {
+            <div class="panel-default">
+                <div class="panel-heading">
+                    ثبت اطلاعات مسافر @(i + 1)
+                </div>
+                <div class="panel-body">
+                    <div class="col-lg-12">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m[i].PassengerName, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(m => m[i].PassengerName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(m => m[i].PassengerName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m[i].NationalCode, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(m => m[i].NationalCode, new { htmlAttributes = new { @class = "form-control", @maxlength = "10" } })
+                                    @Html.ValidationMessageFor(m => m[i].NationalCode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    @Html.LabelFor(m => m[i].Gender, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.RadioButtonFor(m => m[i].Gender, 1, false) @Html.Label("مرد")
+                                    @Html.RadioButtonFor(m => m[i].Gender, 2, false) @Html.Label("زن")
+                                    @Html.ValidationMessageFor(m => m[i].Gender, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        }
+
+        <div class="col-lg-4" style="float: left">
+            <div class="form-group">
+
+                <div class="col-md-12" id="btnSavePassenger">
+                    <input type="submit" class="btn btn-info" value="ثبت اطلاعات مسافر - ادامه فرآیند" />
+                </div>
+                <div class="col-md-12" id="loadingDiv" style="display:none">
+                    <img src="~/Content/Image/6.gif" />
+                </div>
+
+
+            </div>
+        </div>
+
+
+    }
+}
+
+

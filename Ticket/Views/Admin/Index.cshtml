@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>صفحه اصلی مدیریت</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <i class="glyphicon glyphicon-registration-mark" id="newUserIcon" style="cursor:pointer;"></i>&nbsp;
+        <i class="glyphicon glyphicon-euro" id="newRoleIcon" style="cursor:pointer;"></i>&nbsp;
+        <i class="glyphicon glyphicon-user" id="newRoleAssignIcon" style="cursor:pointer;"></i>
+    </div>
+</div>
+<br />
+<div class="panel panel-default" id="newUserDiv" style="display:none;">
+    <div class="panel-heading">ثبت کاربر جدید</div>
+    <div class="panel-body">
+        @{
+            Html.RenderAction("CreateUser");
+        }
+    </div>
+</div>
+<br />
+<div class="panel panel-default" id="newRoleDiv" style="display:none;">
+    <div class="panel-heading">ثبت نقش جدید</div>
+    <div class="panel-body">
+        @{
+            Html.RenderAction("CreateRole");
+        }
+    </div>
+</div>
+<br/>
+<div class="panel panel-default" id="newRoleAssigneDiv" style="display:none;">
+    <div class="panel-heading">تخصیص نقش</div>
+    <div class="panel-body">
+        @{
+            Html.RenderAction("AssigneRole");
+        }
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">لیست کاربران</div>
+    <div class="panel-body">
+        @{
+            Html.RenderAction("GetAllUser");
+        }
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">لیست رول ها</div>
+    <div class="panel-body">
+        @{
+            Html.RenderAction("GetAllRole");
+        }
+    </div>
+</div>
+
+
+@section myScript{
+    <script>
+        $("#newUserIcon").click(function () {
+            $("#newUserDiv").show();
+        });
+
+        $("#newRoleIcon").click(function () {
+            $("#newRoleDiv").show();
+        });
+
+        $("#newRoleAssignIcon").click(function () {
+            $("#newRoleAssigneDiv").show();
+        });
+
+    </script>
+}

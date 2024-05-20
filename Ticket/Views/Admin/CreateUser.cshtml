@@ -1,0 +1,39 @@
+﻿@using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post))
+{
+
+    <div class="form-group">
+        <label>نام کاربر</label>
+        <div class="col-lg-6">
+            <input type="text" class="form-control" name="txtName" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>ایمیل</label>
+        <div class="col-lg-6">
+            <input type="text" class="form-control" name="txtEmail" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>نام کاربری</label>
+        <div class="col-lg-6">
+            <input type="text" class="form-control" name="txtUserName" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>کلمه عبور</label>
+        <div class="col-lg-6">
+            <input type="password" class="form-control" name="txtPass" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-lg-6">
+            <input type="submit" class="form-control btn btn-info" name="btnSaveUser" value="ثبت کاربر جدید" />
+        </div>
+    </div>
+
+
+
+}
