@@ -338,6 +338,7 @@
     <Content Include="Views\Default\ErrorPage.cshtml" />
     <Content Include="Views\Default\Print.cshtml" />
     <Content Include="Views\Manage\GetOrdersInfo.cshtml" />
+    <Content Include="TicketDb.bak" />
     <None Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
